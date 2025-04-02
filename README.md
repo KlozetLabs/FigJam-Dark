@@ -15,7 +15,7 @@ Figma-Darkboard is a simple script that enables dark mode in the Figma whiteboar
 3. Copy and paste the following script into the console and press `Enter`:
 
 [main.js](./main.js)
-```
+```javascript
    class DarkMode {
        constructor() {
            this.HTML = document.querySelector("html");
@@ -88,7 +88,7 @@ You can also integrate this script with **Tampermonkey** for automatic execution
 3. Paste the following script into the editor:
 
 [main.js](./main.js)
-```
+```javascript
    // ==UserScript==
    // @name         Figma Dark Mode
    // @namespace    http://tampermonkey.net/
