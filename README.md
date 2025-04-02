@@ -95,7 +95,7 @@ You can also integrate this script with **Tampermonkey** for automatic execution
    // @version      0.1
    // @description  Enable Dark Mode for Figma Whiteboard
    // @author       You
-   // @match        https://www.figma.com/file/*
+   // @match        https://www.figma.com/board/*
    // @grant        none
    // ==/UserScript==
    
