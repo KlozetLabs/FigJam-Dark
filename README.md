@@ -186,8 +186,12 @@ You can also integrate this script with **Tampermonkey** for automatic execution
           }
       }
       
-      const darkMode = new DarkMode();
-      darkMode.setup();
+      setInterval(() => {
+         try {
+            let darkMode = new DarkMode();
+            darkMode.setup()
+         } catch(e){}
+      }, 5000);
    })();
 ```
 
