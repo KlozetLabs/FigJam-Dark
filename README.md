@@ -1,7 +1,7 @@
-# Figma-Darkboard
+# FigJam-Darkboard
 
 ## Overview
-Figma-Darkboard is a simple script that enables dark mode in the Figma whiteboard interface. It modifies the styles of key elements to provide a darker, more eye-friendly experience.
+FigJam-Darkboard is a simple script that enables dark mode in the FigJam whiteboard interface. It modifies the styles of key elements to provide a darker, more eye-friendly experience.
 
 ## Features
 - Changes background color to black for `html`, `body`, and key elements.
@@ -10,7 +10,7 @@ Figma-Darkboard is a simple script that enables dark mode in the Figma whiteboar
 - Removes unnecessary button borders for a cleaner UI.
 
 ## Installation & Usage
-1. Open the Figma whiteboard in your browser.
+1. Open the FigJam whiteboard in your browser.
 2. Open the browser developer console (`F12` or `Ctrl + Shift + I`).
 3. Copy and paste the following script into the console and press `Enter`:
 
@@ -110,11 +110,11 @@ Figma-Darkboard is a simple script that enables dark mode in the Figma whiteboar
    darkMode.activate(); // Activate the darkMode.
 ```
 
-4. The Figma whiteboard should now be in dark mode.
+4. The FigJam whiteboard should now be in dark mode.
 
 
 ## Alternative Method: Tampermonkey Integration
-You can also integrate this script with **Tampermonkey** for automatic execution every time you visit the Figma whiteboard.
+You can also integrate this script with **Tampermonkey** for automatic execution every time you visit the FigJam whiteboard.
 
 1. Install the [Tampermonkey extension](https://www.tampermonkey.net/) for your browser.
 2. Create a new script in Tampermonkey.
@@ -123,12 +123,12 @@ You can also integrate this script with **Tampermonkey** for automatic execution
 [main.js](./main.js)
 ```javascript
    // ==UserScript==
-   // @name         Figma Dark Mode
+   // @name         FigJam Dark Mode
    // @namespace    http://tampermonkey.net/
    // @version      0.1
-   // @description  Enable Dark Mode for Figma Whiteboard
+   // @description  Enable Dark Mode for FigJam Whiteboard
    // @author       You
-   // @match        https://www.figma.com/board/*
+   // @match        https://www.FigJam.com/board/*
    // @grant        none
    // ==/UserScript==
    
@@ -230,7 +230,7 @@ You can also integrate this script with **Tampermonkey** for automatic execution
    })();
 ```
 
-4. Save the script and refresh your Figma whiteboard. The dark mode should now be applied automatically every time you load the page.
+4. Save the script and refresh your FigJam whiteboard. The dark mode should now be applied automatically every time you load the page.
 
 ## License
 This project is open-source under the **GNU General Public License v3.0**.
