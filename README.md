@@ -128,7 +128,7 @@ You can also integrate this script with **Tampermonkey** for automatic execution
    // @version      0.1
    // @description  Enable Dark Mode for FigJam Whiteboard
    // @author       You
-   // @match        https://www.FigJam.com/board/*
+   // @match        https://www.figma.com/board/*
    // @grant        none
    // ==/UserScript==
    
