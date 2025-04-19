@@ -17,78 +17,97 @@ Figma-Darkboard is a simple script that enables dark mode in the Figma whiteboar
 [main.js](./main.js)
 ```javascript
    class DarkMode {
-       constructor() {
-           this.HTML = document.querySelector("html");
-           this.BODY = document.querySelector("body");
-           this.CANVAS = document.querySelector("canvas");
-           this.GPU_VIEW_CONTENT = document.querySelector("div.gpu-view-content");
-           this.TOOLBAR = document.querySelector("div#delightful-toolbar");
-       }
-   
-       applyStyle(element, styles) {
-           if (element) {
-               Object.assign(element.style, styles);
-           }
-       }
-   
-       applyAttribute(element, attribute, value) {
-           if (element) {
-               element.setAttribute(attribute, value);
-           }
-       }
-   
-       make_html_darker() {
-           console.log("Making HTML darker.");
-   
-           this.applyStyle(this.HTML, { background: "black" });
-       }
-   
-       make_body_darker() {
-           console.log("Making BODY darker.");
-   
-           this.applyAttribute(this.BODY, "data-preferred-theme", "dark");
-           this.applyStyle(this.BODY, { colorScheme: "dark", background: "black" });
-       }
-   
-       make_canvas_darker() {
-           console.log("Making CANVAS darker.");
-   
-           this.applyStyle(this.CANVAS, { opacity: "0.5", background: "black" });
-       }
-   
-       make_gpu_view_content_darker() {
-           console.log("Making GPU_VIEW_CONTENT darker.");
-   
-           this.applyStyle(this.GPU_VIEW_CONTENT, { background: "black" });
-       }
-   
-       make_toolbar_darker() {
-           console.log("Making TOOLBAR darker.");
-   
-           this.applyStyle(this.TOOLBAR, { background: "#2f2f2f" });
-       }
-   
-       make_other_elements_darker() {
-           console.log("Making other elements darker.");
-   
-           const button = document.querySelector("button.meeting_tools_toolbar--toolbarItemButton--VBNmh.meeting_tools_toolbar--withHover--r7Sks");
-           this.applyStyle(button, { border: "none" });
-       }
-   
-       setup() {
-           console.log("Darker setup has begun!");
-   
-           this.make_html_darker();
-           this.make_body_darker();
-           this.make_canvas_darker();
-           this.make_gpu_view_content_darker();
-           this.make_toolbar_darker();
-           this.make_other_elements_darker();
-       }
+      constructor(_MAX_TRIES = 10) {
+         this.MAX_TRIES = _MAX_TRIES;
+         this.ACTIVATED = false;
+      }
+
+      fetchElements() {
+         this.HTML = document.querySelector("html");
+         this.BODY = document.querySelector("body");
+         this.CANVAS = document.querySelector("canvas");
+         this.GPU_VIEW_CONTENT = document.querySelector("div.gpu-view-content");
+         this.TOOLBAR = document.querySelector("div#delightful-toolbar");
+      }
+
+      applyStyle(element, styles) {
+         if (!element)
+            throw new Error(`[applyStyle] -> Element: ${element} not found.`);
+
+            Object.assign(element.style, styles);
+      }
+
+      applyAttribute(element, attribute, value) {
+         if (!element)
+            throw new Error(`[applyAttribute] -> Element: ${element} not found.`);
+
+            element.setAttribute(attribute, value);
+      }
+
+      make_html_darker() {
+         this.applyStyle(this.HTML, { background: "black" });
+      }
+
+      make_body_darker() {
+         this.applyAttribute(this.BODY, "data-preferred-theme", "dark");
+         this.applyStyle(this.BODY, { colorScheme: "dark", background: "black" });
+      }
+
+      make_canvas_darker() {
+         this.applyStyle(this.CANVAS, { opacity: "0.5", background: "black" });
+      }
+
+      make_gpu_view_content_darker() {
+         this.applyStyle(this.GPU_VIEW_CONTENT, { background: "black" });
+      }
+
+      make_toolbar_darker() {
+         this.applyStyle(this.TOOLBAR, { background: "#2f2f2f" });
+      }
+
+      make_other_elements_darker() {
+         const button = document.querySelector("button.meeting_tools_toolbar--toolbarItemButton--VBNmh.meeting_tools_toolbar--withHover--r7Sks");
+         this.applyStyle(button, { border: "none" });
+      }
+
+      activate() {
+         console.log("Activating dark mode!");
+         this.fetchElements(); // Fetch all elements.
+
+         let tries = 0;
+         let intervalId = setInterval(() => {
+            tries += 1;
+
+            if (this.ACTIVATED) {
+               console.log("Dark mode was activated successfully.");
+               return clearInterval(intervalId);
+            }
+
+            if (tries > this.MAX_TRIES) {
+               console.log("Something went wrong while activating darkmode to some elements.");
+               return clearInterval(intervalId);
+            }
+
+            try {
+               this.make_html_darker();
+               this.make_body_darker();
+               this.make_canvas_darker();
+               this.make_gpu_view_content_darker();
+               this.make_toolbar_darker();
+               this.make_other_elements_darker();
+
+               this.ACTIVATED = !this.ACTIVATED;
+            } catch(e) {
+               console.log(e);
+               this.fetchElements(); // Fetch all elements again.
+            }
+
+         }, 1000);
+      }
    }
-   
-   const darkMode = new DarkMode();
-   darkMode.setup();
+
+   let darkMode = new DarkMode(15);
+   darkMode.activate(); // Activate the darkMode.
 ```
 
 4. The Figma whiteboard should now be in dark mode.
@@ -114,84 +133,100 @@ You can also integrate this script with **Tampermonkey** for automatic execution
    // ==/UserScript==
    
    (function() {
-       'use strict';
-       class DarkMode {
-          constructor() {
-              this.HTML = document.querySelector("html");
-              this.BODY = document.querySelector("body");
-              this.CANVAS = document.querySelector("canvas");
-              this.GPU_VIEW_CONTENT = document.querySelector("div.gpu-view-content");
-              this.TOOLBAR = document.querySelector("div#delightful-toolbar");
-          }
+      'use strict';
+   
+      class DarkMode {
+         constructor(_MAX_TRIES = 10) {
+            this.MAX_TRIES = _MAX_TRIES;
+            this.ACTIVATED = false;
+         }
       
-          applyStyle(element, styles) {
-              if (element) {
-                  Object.assign(element.style, styles);
-              }
-          }
+         fetchElements() {
+            this.HTML = document.querySelector("html");
+            this.BODY = document.querySelector("body");
+            this.CANVAS = document.querySelector("canvas");
+            this.GPU_VIEW_CONTENT = document.querySelector("div.gpu-view-content");
+            this.TOOLBAR = document.querySelector("div#delightful-toolbar");
+         }
       
-          applyAttribute(element, attribute, value) {
-              if (element) {
-                  element.setAttribute(attribute, value);
-              }
-          }
+         applyStyle(element, styles) {
+            if (!element)
+               throw new Error(`[applyStyle] -> Element: ${element} not found.`);
       
-          make_html_darker() {
-              console.log("Making HTML darker.");
+               Object.assign(element.style, styles);
+         }
       
-              this.applyStyle(this.HTML, { background: "black" });
-          }
+         applyAttribute(element, attribute, value) {
+            if (!element)
+               throw new Error(`[applyAttribute] -> Element: ${element} not found.`);
       
-          make_body_darker() {
-              console.log("Making BODY darker.");
+               element.setAttribute(attribute, value);
+         }
       
-              this.applyAttribute(this.BODY, "data-preferred-theme", "dark");
-              this.applyStyle(this.BODY, { colorScheme: "dark", background: "black" });
-          }
+         make_html_darker() {
+            this.applyStyle(this.HTML, { background: "black" });
+         }
       
-          make_canvas_darker() {
-              console.log("Making CANVAS darker.");
+         make_body_darker() {
+            this.applyAttribute(this.BODY, "data-preferred-theme", "dark");
+            this.applyStyle(this.BODY, { colorScheme: "dark", background: "black" });
+         }
       
-              this.applyStyle(this.CANVAS, { opacity: "0.5", background: "black" });
-          }
+         make_canvas_darker() {
+            this.applyStyle(this.CANVAS, { opacity: "0.5", background: "black" });
+         }
       
-          make_gpu_view_content_darker() {
-              console.log("Making GPU_VIEW_CONTENT darker.");
+         make_gpu_view_content_darker() {
+            this.applyStyle(this.GPU_VIEW_CONTENT, { background: "black" });
+         }
       
-              this.applyStyle(this.GPU_VIEW_CONTENT, { background: "black" });
-          }
+         make_toolbar_darker() {
+            this.applyStyle(this.TOOLBAR, { background: "#2f2f2f" });
+         }
       
-          make_toolbar_darker() {
-              console.log("Making TOOLBAR darker.");
+         make_other_elements_darker() {
+            const button = document.querySelector("button.meeting_tools_toolbar--toolbarItemButton--VBNmh.meeting_tools_toolbar--withHover--r7Sks");
+            this.applyStyle(button, { border: "none" });
+         }
       
-              this.applyStyle(this.TOOLBAR, { background: "#2f2f2f" });
-          }
+         activate() {
+            console.log("Activating dark mode!");
+            this.fetchElements(); // Fetch all elements.
       
-          make_other_elements_darker() {
-              console.log("Making other elements darker.");
+            let tries = 0;
+            let intervalId = setInterval(() => {
+               tries += 1;
       
-              const button = document.querySelector("button.meeting_tools_toolbar--toolbarItemButton--VBNmh.meeting_tools_toolbar--withHover--r7Sks");
-              this.applyStyle(button, { border: "none" });
-          }
+               if (this.ACTIVATED) {
+                  console.log("Dark mode was activated successfully.");
+                  return clearInterval(intervalId);
+               }
       
-          setup() {
-              console.log("Darker setup has begun!");
+               if (tries > this.MAX_TRIES) {
+                  console.log("Something went wrong while activating darkmode to some elements.");
+                  return clearInterval(intervalId);
+               }
       
-              this.make_html_darker();
-              this.make_body_darker();
-              this.make_canvas_darker();
-              this.make_gpu_view_content_darker();
-              this.make_toolbar_darker();
-              this.make_other_elements_darker();
-          }
+               try {
+                  this.make_html_darker();
+                  this.make_body_darker();
+                  this.make_canvas_darker();
+                  this.make_gpu_view_content_darker();
+                  this.make_toolbar_darker();
+                  this.make_other_elements_darker();
+      
+                  this.ACTIVATED = !this.ACTIVATED;
+               } catch(e) {
+                  console.log(e);
+                  this.fetchElements(); // Fetch all elements again.
+               }
+      
+            }, 1000);
+         }
       }
       
-      setInterval(() => {
-         try {
-            let darkMode = new DarkMode();
-            darkMode.setup()
-         } catch(e){}
-      }, 5000);
+      let darkMode = new DarkMode(15);
+      darkMode.activate(); // Activate the darkMode.
    })();
 ```
 
