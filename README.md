@@ -34,14 +34,14 @@ Figma-Darkboard is a simple script that enables dark mode in the Figma whiteboar
          if (!element)
             throw new Error(`[applyStyle] -> Element: ${element} not found.`);
 
-            Object.assign(element.style, styles);
+         Object.assign(element.style, styles);
       }
 
       applyAttribute(element, attribute, value) {
          if (!element)
             throw new Error(`[applyAttribute] -> Element: ${element} not found.`);
 
-            element.setAttribute(attribute, value);
+         element.setAttribute(attribute, value);
       }
 
       make_html_darker() {
@@ -153,14 +153,14 @@ You can also integrate this script with **Tampermonkey** for automatic execution
             if (!element)
                throw new Error(`[applyStyle] -> Element: ${element} not found.`);
       
-               Object.assign(element.style, styles);
+            Object.assign(element.style, styles);
          }
       
          applyAttribute(element, attribute, value) {
             if (!element)
                throw new Error(`[applyAttribute] -> Element: ${element} not found.`);
       
-               element.setAttribute(attribute, value);
+            element.setAttribute(attribute, value);
          }
       
          make_html_darker() {
